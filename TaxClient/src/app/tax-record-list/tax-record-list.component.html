@@ -1,0 +1,28 @@
+<main class="flex items-center justify-center h-screen">
+  <div class="p-6 w-2xl mx-auto rounded-md">
+    <h1 class="text-3xl font-bold mb-4">Tax Records</h1>
+
+    <div>
+      <button
+        routerLink="/new"
+        class="px-4 py-2 items-end font-medium bg-black text-white rounded hover:bg-zinc-700 transition-all duration-300 cursor-pointer"
+      >
+        Add New Record
+      </button>
+
+      <div
+        *ngFor="let record of taxRecords"
+        class="bg-zinc-200 p-2 my-4 rounded-md"
+      >
+        <h2 class="text-xl font-semibold">{{ record.recordTitle }}</h2>
+        <p>Year: {{ record.taxYear }} | Income: {{ record.incomeAmount }}</p>
+        <button [routerLink]="['/edit', record.id]" class="mr-2 text-blue-600">
+          Edit
+        </button>
+        <button (click)="deleteRecord(record.id)" class="text-red-600">
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</main>

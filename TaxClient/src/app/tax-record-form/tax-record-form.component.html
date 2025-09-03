@@ -1,1 +1,77 @@
-<p>tax-record-form works!</p>
+<div class="flex items-center justify-center h-screen">
+  <div class="bg-zinc-200 p-4 rounded-md">
+    <h1 class="text-xl font-bold mb-4">
+      {{ isEdit ? "Edit Record" : "New Record" }}
+    </h1>
+
+    <form (ngSubmit)="save()" class="space-y-4 w-2xl">
+      <div>
+        <label class="block font-medium">Title</label>
+        <input
+          [(ngModel)]="record.recordTitle"
+          name="recordTitle"
+          required
+          class="w-full border p-2 rounded"
+        />
+      </div>
+
+      <div>
+        <label class="block font-medium">Tax Year</label>
+        <input
+          type="number"
+          [(ngModel)]="record.taxYear"
+          name="taxYear"
+          required
+          class="w-full border p-2 rounded"
+        />
+      </div>
+
+      <div>
+        <label class="block font-medium">Income Amount</label>
+        <input
+          type="number"
+          [(ngModel)]="record.incomeAmount"
+          name="incomeAmount"
+          required
+          class="w-full border p-2 rounded"
+        />
+      </div>
+
+      <div>
+        <label class="block font-medium">Deductions</label>
+        <input
+          type="number"
+          [(ngModel)]="record.deductionsAmount"
+          name="deductionsAmount"
+          required
+          class="w-full border p-2 rounded"
+        />
+      </div>
+
+      <div>
+        <label class="block font-medium">Notes</label>
+        <textarea
+          [(ngModel)]="record.notes"
+          name="notes"
+          class="w-full border p-2 rounded"
+        ></textarea>
+      </div>
+
+      <div class="justify-between flex">
+        <button
+          type="submit"
+          class="px-4 py-2 bg-black text-white rounded cursor-pointer hover:bg-zinc-800 transition duration-300 font-medium"
+        >
+          {{ isEdit ? "Update" : "Create" }}
+        </button>
+        <button
+          type="button"
+          (click)="router.navigateByUrl('')"
+          class="px-4 py-2 bg-zinc-400 hover:bg-zinc-500 cursor-pointer transition duration-300 font-medium text-white rounded"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

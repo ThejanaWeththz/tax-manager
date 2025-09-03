@@ -1,8 +1,8 @@
-<main class="flex items-center justify-center h-screen">
+<main class="flex items-center justify-center h-min-dvh">
   <div class="p-6 w-2xl mx-auto rounded-md">
     <h1 class="text-3xl font-bold mb-4">Tax Records</h1>
 
-    <div>
+    <div class="space-y-4">
       <button
         routerLink="/form"
         class="px-4 py-2 items-end font-medium bg-black text-white rounded hover:bg-zinc-700 transition duration-300 cursor-pointer"
@@ -10,21 +10,80 @@
         Add New Record
       </button>
 
+      <div class="mb-4 flex gap-2">
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          placeholder="Search title..."
+          class="border p-2 rounded"
+        />
+        <input
+          type="number"
+          [(ngModel)]="filterYear"
+          placeholder="Year"
+          class="border p-2 rounded w-28"
+        />
+
+        <select [(ngModel)]="sortField" class="border p-2 rounded">
+          <option value="">Sort By</option>
+          <option value="taxYear">Tax Year</option>
+          <option value="incomeAmount">Income Amount</option>
+        </select>
+      </div>
+
       <div
-        *ngFor="let record of taxRecords"
+        *ngFor="let record of filteredRecords()"
         class="bg-zinc-200 p-4 my-4 rounded-md cursor-pointer transition duration-300 hover:bg-zinc-300 space-y-4"
-        [routerLink]="['/form', record.id]"
       >
-        <h2 class="text-xl font-semibold">{{ record.recordTitle }}</h2>
+        <h2 class="text-xl font-semibold" [routerLink]="['/form', record.id]">
+          {{ record.recordTitle }}
+        </h2>
         <p class="font-medium">
           Year: {{ record.taxYear }} | Income: {{ record.incomeAmount }}
         </p>
-        <button
-          (click)="deleteRecord(record.id)"
-          class="px-4 py-2 bg-red-400 cursor-pointer rounded-md hover:bg-red-500 transition duration-300 font-medium"
+        <div class="flex justify-between">
+          <button
+            (click)="toggleDetails(record.id)"
+            class="px-4 py-2 items-end font-medium bg-black text-white rounded hover:bg-zinc-700 transition duration-300 cursor-pointer"
+          >
+            {{ expandedId === record.id ? "Hide" : "View" }}
+          </button>
+          <button
+            (click)="deleteRecord(record.id)"
+            class="px-4 py-2 text-red-400 cursor-pointer rounded-md hover:text-red-500 transition duration-300 font-medium"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-trash2-icon lucide-trash-2"
+            >
+              <path d="M10 11v6" />
+              <path d="M14 11v6" />
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+              <path d="M3 6h18" />
+              <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+            </svg>
+          </button>
+        </div>
+
+        <div
+          *ngIf="expandedId === record.id"
+          class="mt-3 p-3 bg-gray-100 rounded"
         >
-          Delete
-        </button>
+          <p>
+            <strong>Total Income:</strong>
+            {{ record.incomeAmount }}
+          </p>
+          <p><strong>Deductions:</strong> {{ record.deductionsAmount }}</p>
+          <p><strong>Notes:</strong> {{ record.notes || "-" }}</p>
+        </div>
       </div>
     </div>
   </div>
